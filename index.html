@@ -1,147 +1,51 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Joey Dressel - Portfolio</title>
-  <style>
-    body {
-      font-family: sans-serif;
-      margin: 0;
-      padding: 0;
-      background-color: #f4f4f4;
-    }
-
-    header {
-      background-color: #333;
-      color: #fff;
-      padding: 20px;
-      text-align: center;
-    }
-
-    h1 {
-      margin: 0;
-    }
-
-    main {
-      padding: 20px;
-    }
-
-    section {
-      background-color: #fff;
-      padding: 20px;
-      margin-bottom: 20px;
-      border-radius: 5px;
-      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-    }
-
-    h2 {
-      margin-top: 0;
-    }
-
-    ul {
-      list-style: none;
-      padding: 0;
-    }
-
-    li {
-      margin-bottom: 10px;
-    }
-
-    a {
-      color: #333;
-      text-decoration: none;
-    }
-
-    a:hover {
-      text-decoration: underline;
-    }
-
-    .editable {
-      border: 1px solid #ccc;
-      padding: 10px;
-      margin-bottom: 10px;
-      border-radius: 5px;
-      background-color: #f9f9f9;
-    }
-
-    .editable textarea {
-      width: 100%;
-      height: 100px;
-      resize: vertical;
-      border: none;
-      padding: 5px;
-      font-family: inherit;
-      font-size: inherit;
-    }
-
-    .editable button {
-      background-color: #4CAF50;
-      color: white;
-      padding: 10px 20px;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-    }
-
-    .editable button:hover {
-      background-color: #45a049;
-    }
-  </style>
+  <title>High School Class Database</title>
 </head>
 <body>
-  <header>
-    <h1>Joey Dressel</h1>
-  </header>
+  <h1>High School Class Database</h1>
 
-  <main>
-    <section>
-      <h2>Code</h2>
-      <ul>
-        <!-- Add your code projects here -->
-        <li><a href="#">Project 1</a></li>
-        <li><a href="#">Project 2</a></li>
-      </ul>
-    </section>
+  <form id="add-person-form">
+    <label for="name">Name:</label>
+    <input type="text" id="name" name="name" required><br><br>
 
-    <section>
-      <h2>Movies</h2>
-      <ul>
-        <!-- Add your movie projects here -->
-        <li><a href="#">Movie 1</a></li>
-        <li><a href="#">Movie 2</a></li>
-      </ul>
-    </section>
+    <label for="email">Email:</label>
+    <input type="email" id="email" name="email"><br><br>
 
-    <section class="editable">
-      <h2>Edit This Section</h2>
-      <textarea id="editable-content">
-        This is the content of the editable section. You can edit it directly here.
-      </textarea>
-      <button onclick="updateContent()">Save Changes</button>
-    </section>
+    <button type="submit">Add Person</button>
+  </form>
 
-    <script>
-      function updateContent() {
-        const content = document.getElementById('editable-content').value;
-        fetch('/save', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify({ content })
-        })
-        .then(response => {
-          if (response.ok) {
-            alert('Content saved successfully!');
-          } else {
-            alert('Error saving content');
-          }
-        })
-        .catch(error => {
-          console.error('Error:', error);
-          alert('Error saving content');
-        });
-      }
-    </script>
-  </main>
+  <script>
+    const form = document.getElementById('add-person-form');
+
+    form.addEventListener('submit', (event) => {
+      event.preventDefault();
+
+      const name = document.getElementById('name').value;
+      const email = document.getElementById('email').value;
+
+      // Send a request to the server to add the person to the database
+      fetch('/add-person', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ name, email })
+      })
+      .then(response => {
+        if (response.ok) {
+          alert('Person added successfully!');
+          form.reset();
+        } else {
+          alert('Error adding person');
+        }
+      })
+      .catch(error => {
+        console.error('Error:', error);
+        alert('Error adding person');
+      });
+    });
+  </script>
 </body>
 </html>

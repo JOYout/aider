@@ -1,24 +1,30 @@
 const express = require('express');
-const fs = require('fs');
-const path = require('path');
+const { Pool } = require('pg');
 
 const app = express();
 const port = process.env.PORT || 3000;
 
+// Replace with your actual database credentials
+const pool = new Pool({
+  user: 'your_user',
+  host: 'your_host',
+  database: 'your_database',
+  password: 'your_password',
+  port: 5432,
+});
+
 app.use(express.json());
 
-app.post('/save', (req, res) => {
-  const content = req.body.content;
-  const filePath = path.join(__dirname, 'index.html');
+app.post('/add-person', async (req, res) => {
+  const { name, email } = req.body;
 
-  fs.writeFile(filePath, content, err => {
-    if (err) {
-      console.error(err);
-      res.status(500).send('Error saving content');
-    } else {
-      res.send('Content saved successfully');
-    }
-  });
+  try {
+    const result = await pool.query('INSERT INTO people (name, email) VALUES ($1, $2)', [name, email]);
+    res.send('Person added successfully');
+  } catch (err) {
+    console.error(err);
+    res.status(500).send('Error adding person');
+  }
 });
 
 app.listen(port, () => {
