@@ -20,26 +20,39 @@
       height: 100%;
       background-color: white;
     }
+
+    #pen-size-slider {
+      position: absolute;
+      top: 20px;
+      left: 20px;
+    }
   </style>
 </head>
 <body>
   <div id="canvas-container">
     <canvas id="canvas"></canvas>
   </div>
+  <input type="range" id="pen-size-slider" min="1" max="20" value="5">
 
   <script>
     const canvas = document.getElementById('canvas');
     const ctx = canvas.getContext('2d');
+    const penSizeSlider = document.getElementById('pen-size-slider');
 
     let isDrawing = false;
     let lastX = 0;
     let lastY = 0;
+    let penSize = 5;
 
     // Add the mousedown event listener to the canvas
     canvas.addEventListener('mousedown', startDrawing);
     canvas.addEventListener('mousemove', draw);
     canvas.addEventListener('mouseup', stopDrawing);
     canvas.addEventListener('mouseout', stopDrawing);
+
+    penSizeSlider.addEventListener('input', () => {
+      penSize = penSizeSlider.value;
+    });
 
     function startDrawing(e) {
       isDrawing = true;
@@ -52,7 +65,7 @@
 
       ctx.beginPath();
       ctx.strokeStyle = 'black';
-      ctx.lineWidth = 5;
+      ctx.lineWidth = penSize;
       ctx.lineCap = 'round';
       // Draw a line from the previous mouse position to the current one
       ctx.moveTo(lastX, lastY);
