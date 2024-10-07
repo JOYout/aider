@@ -122,8 +122,24 @@
     <script>
       function updateContent() {
         const content = document.getElementById('editable-content').value;
-        const editableSection = document.querySelector('.editable');
-        editableSection.innerHTML = `<h2>Edit This Section</h2><p>${content}</p>`;
+        fetch('/save', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ content })
+        })
+        .then(response => {
+          if (response.ok) {
+            alert('Content saved successfully!');
+          } else {
+            alert('Error saving content');
+          }
+        })
+        .catch(error => {
+          console.error('Error:', error);
+          alert('Error saving content');
+        });
       }
     </script>
   </main>
