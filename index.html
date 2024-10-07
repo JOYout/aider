@@ -53,10 +53,11 @@
 
   <script>
     const peopleTable = document.getElementById('people-table').getElementsByTagName('tbody')[0];
+    const serverAddress = 'http://localhost:3000'; // Set the server address here
 
     // Function to fetch and display people data
     function fetchPeople() {
-      fetch('/get-people')
+      fetch(`${serverAddress}/get-people`)
         .then(response => response.json())
         .then(people => {
           peopleTable.innerHTML = ''; // Clear existing table data
@@ -105,7 +106,7 @@
         const newValue = cell.querySelector('input').value;
 
         // Send a request to the server to update the person's data
-        fetch(`/update-person/${id}`, {
+        fetch(`${serverAddress}/update-person/${id}`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json'
