@@ -15,15 +15,41 @@ const pool = new Pool({
 
 app.use(express.json());
 
+// Route to add a new person
 app.post('/add-person', async (req, res) => {
-  const { name, email } = req.body;
+  const { name, email, phone, picture } = req.body;
 
   try {
-    const result = await pool.query('INSERT INTO people (name, email) VALUES ($1, $2)', [name, email]);
+    const result = await pool.query('INSERT INTO people (name, email, phone, picture) VALUES ($1, $2, $3, $4)', [name, email, phone, picture]);
     res.send('Person added successfully');
   } catch (err) {
     console.error(err);
     res.status(500).send('Error adding person');
+  }
+});
+
+// Route to get all people
+app.get('/get-people', async (req, res) => {
+  try {
+    const result = await pool.query('SELECT * FROM people');
+    res.json(result.rows);
+  } catch (err) {
+    console.error(err);
+    res.status(500).send('Error fetching people');
+  }
+});
+
+// Route to update a person's data
+app.post('/update-person/:id', async (req, res) => {
+  const { id } = req.params;
+  const { field, newValue } = req.body;
+
+  try {
+    const result = await pool.query(`UPDATE people SET ${field} = $1 WHERE id = $2`, [newValue, id]);
+    res.send('Person updated successfully');
+  } catch (err) {
+    console.error(err);
+    res.status(500).send('Error updating person');
   }
 });
 
