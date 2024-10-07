@@ -54,6 +54,37 @@
     a:hover {
       text-decoration: underline;
     }
+
+    .editable {
+      border: 1px solid #ccc;
+      padding: 10px;
+      margin-bottom: 10px;
+      border-radius: 5px;
+      background-color: #f9f9f9;
+    }
+
+    .editable textarea {
+      width: 100%;
+      height: 100px;
+      resize: vertical;
+      border: none;
+      padding: 5px;
+      font-family: inherit;
+      font-size: inherit;
+    }
+
+    .editable button {
+      background-color: #4CAF50;
+      color: white;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    .editable button:hover {
+      background-color: #45a049;
+    }
   </style>
 </head>
 <body>
@@ -79,6 +110,22 @@
         <li><a href="#">Movie 2</a></li>
       </ul>
     </section>
+
+    <section class="editable">
+      <h2>Edit This Section</h2>
+      <textarea id="editable-content">
+        This is the content of the editable section. You can edit it directly here.
+      </textarea>
+      <button onclick="updateContent()">Save Changes</button>
+    </section>
+
+    <script>
+      function updateContent() {
+        const content = document.getElementById('editable-content').value;
+        const editableSection = document.querySelector('.editable');
+        editableSection.innerHTML = `<h2>Edit This Section</h2><p>${content}</p>`;
+      }
+    </script>
   </main>
 </body>
 </html>
