@@ -64,7 +64,8 @@
       ctx.strokeStyle = 'black';
       ctx.lineWidth = 5;
       ctx.lineCap = 'round';
-      ctx.moveTo(lastX, lastY);
+      // Draw a single point at the current mouse position
+      ctx.moveTo(e.offsetX, e.offsetY);
       ctx.lineTo(e.offsetX, e.offsetY);
       ctx.stroke();
 
